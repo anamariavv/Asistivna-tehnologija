@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -10,6 +11,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.LongArray;
 
 public class Matematko extends Game {
 	public static final int W_WIDTH = 1680;
@@ -23,6 +26,8 @@ public class Matematko extends Game {
 	public TextureAtlas textureAtlas;
 	public Music currentMusic;
 	public Skin skin;
+	public Array<Sound> sfx;
+	public static float sfx_volume = 0.5f;
 
 	@Override
 	public void create () {
@@ -33,8 +38,10 @@ public class Matematko extends Game {
 		textureAtlas = new TextureAtlas(Gdx.files.internal("Fonts & skins/skin.atlas"));
 		mainScreen = new MainMenuScreen(this);
 		optionsScreen = new OptionsScreen(this);
-		this.skin = new Skin();
+		skin = new Skin();
+		sfx = new Array<Sound>();
 
+		addSFX();
 		createFonts();
 
 		skin.addRegions(textureAtlas);
@@ -43,8 +50,17 @@ public class Matematko extends Game {
 
 		currentMusic = Gdx.audio.newMusic(Gdx.files.internal("Sound/music_4.wav"));
 		currentMusic.setLooping(true);
+		currentMusic.setVolume(0.9f);
 
 		this.setScreen(mainScreen);
+	}
+
+	private void addSFX() {
+		Sound buttonSound = Gdx.audio.newSound(Gdx.files.internal("Sound/button_click_2.wav"));
+		Sound startGameSound = Gdx.audio.newSound(Gdx.files.internal(("Sound/start_game.ogg")));
+
+		sfx.add(buttonSound);
+		sfx.add(startGameSound);
 	}
 
 	private void createFonts() {
@@ -68,5 +84,6 @@ public class Matematko extends Game {
 		mainScreen.dispose();
 		optionsScreen.dispose();
 		currentMusic.dispose();
+		sfx.clear();
 	}
 }

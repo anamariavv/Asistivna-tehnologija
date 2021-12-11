@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -33,7 +34,7 @@ public class OptionsScreen implements Screen {
 
     private void createUI() {
         backButton = new TextButton("Povratak", game.skin, "default");
-        musicLabel = new Label("Glasnoća glazbe", game.skin, "default");
+        musicLabel = new Label("Glasnoca glazbe", game.skin, "default");
         sfxLabel = new Label("Glasnoca efekata", game.skin, "default");
         musicSlider = new Slider(0.0f, 1.0f, 0.1f, false, game.skin, "default-horizontal");
         sfxSlider = new Slider(0.0f, 1.0f, 0.1f, false, game.skin, "default-horizontal");
@@ -46,9 +47,12 @@ public class OptionsScreen implements Screen {
             }
         });
 
+        sfxSlider.setValue(game.sfx_volume);
+
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                game.sfx.get(0).play(game.sfx_volume);
                 game.setScreen(game.mainScreen);
             }
         });
