@@ -23,6 +23,7 @@ public class Matematko extends Game {
 	public Player playerMatko;
 	public MainMenuScreen mainScreen;
 	public OptionsScreen optionsScreen;
+	public GameScreen gameScreen;
 	public TextureAtlas textureAtlas;
 	public Music currentMusic;
 	public Skin skin;
@@ -38,6 +39,7 @@ public class Matematko extends Game {
 		textureAtlas = new TextureAtlas(Gdx.files.internal("Fonts & skins/skin.atlas"));
 		mainScreen = new MainMenuScreen(this);
 		optionsScreen = new OptionsScreen(this);
+		gameScreen = new GameScreen(this);
 		skin = new Skin();
 		sfx = new Array<Sound>();
 

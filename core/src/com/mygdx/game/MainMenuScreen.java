@@ -43,8 +43,9 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                  game.sfx.get(1).play(0.3f);
-                 stage.addAction(fadeOut(2f));
+                 stage.addAction(fadeOut(1f)); //doesn't work, dk why??
                  game.currentMusic.stop();
+                 game.setScreen(game.gameScreen);
             }
         });
 
@@ -98,14 +99,13 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void show() {
-
         Gdx.input.setInputProcessor(stage);
         game.currentMusic.play();
         Texture titleTexture = new Texture(Gdx.files.internal("Fonts & skins/Matematko.png"));
 
         titleImage = new Image(titleTexture);
         titleImage.setPosition(stage.getWidth()/2 - 564/2, stage.getHeight()/2 + 300);
-        titleImage.addAction(sequence(alpha(0f), parallel(moveBy(0,-100,3f), fadeIn(3f))));
+        titleImage.addAction(sequence(alpha(0f), parallel(moveBy(0,-90,1.5f), fadeIn(2f))));
         game.playerMatko.characterImg.setPosition(Matematko.W_WIDTH/2+200, Matematko.W_HEIGHT/2-300);
         game.playerMatko.characterImg.setWidth(256);
         game.playerMatko.characterImg.setHeight(256);
