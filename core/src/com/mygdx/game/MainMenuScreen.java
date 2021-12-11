@@ -39,9 +39,24 @@ public class MainMenuScreen implements Screen {
         settingButton = new TextButton("Postavke", game.skin, "default");
         exitButton = new TextButton("Izlaz", game.skin, "default");
 
+        playButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                 game.sfx.get(1).play(0.3f);
+                 stage.addAction(fadeOut(2f));
+                 game.currentMusic.stop();
+            }
+        });
+
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                game.sfx.get(0).play(game.sfx_volume);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 Gdx.app.exit();
             }
         });
@@ -49,6 +64,7 @@ public class MainMenuScreen implements Screen {
         settingButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                game.sfx.get(0).play(game.sfx_volume);
                 game.setScreen(game.optionsScreen);
             }
         });
@@ -61,6 +77,8 @@ public class MainMenuScreen implements Screen {
         table.add(settingButton);
         table.row();
         table.add(exitButton);
+
+        table.addAction(sequence(alpha(0f), fadeIn(2f)));
 
         stage.addActor(table);
     }
