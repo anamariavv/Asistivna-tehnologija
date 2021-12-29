@@ -10,9 +10,11 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.LongArray;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 
 public class Matematko extends Game {
 	public static final int W_WIDTH = 1680;
@@ -29,6 +31,8 @@ public class Matematko extends Game {
 	public Skin skin;
 	public Array<Sound> sfx;
 	public static float sfx_volume = 0.5f;
+	public TiledMap map;
+	public OrthogonalTiledMapRenderer mapRenderer;
 
 	@Override
 	public void create () {
@@ -42,6 +46,8 @@ public class Matematko extends Game {
 		gameScreen = new GameScreen(this);
 		skin = new Skin();
 		sfx = new Array<Sound>();
+		map = new TmxMapLoader().load(("Maps/Level 1.tmx"));
+		mapRenderer = new OrthogonalTiledMapRenderer(map);
 
 		addSFX();
 		createFonts();
