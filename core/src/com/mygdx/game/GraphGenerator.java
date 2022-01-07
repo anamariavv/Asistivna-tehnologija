@@ -3,15 +3,14 @@ package com.mygdx.game;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.BinaryHeap;
 
 
 public class GraphGenerator {
 
     //creates graph from tiledmap
-    public static Graph createGraph(TiledMap map) {
-        Graph graph;
-        Array<BinaryHeap.Node> nodes = new Array<BinaryHeap.Node>();
+    public static MyGraph createGraph(TiledMap map) {
+        MyGraph graph;
+        Array<Node> nodes = new Array<Node>();
         TiledMapTileLayer layer = (TiledMapTileLayer)map.getLayers().get(0);
         int mapHeight = MapManager.lvlTileHeight;
         int mapWidth = MapManager.lvlTileWidth;
@@ -32,31 +31,30 @@ public class GraphGenerator {
                 TiledMapTileLayer.Cell left = layer.getCell(i, j-1);
                 TiledMapTileLayer.Cell right = layer.getCell(i, j+1);
 
-                //create connections-> implement collision here??
-                Node targetNode = (Node) nodes.get(mapWidth*i+j);
-                if(targetNode == null) {
-                    if(i != 0 && down == null) {
-                        Node downNode = (Node) nodes.get(mapWidth * (i-1) + j);
-                        targetNode.createConnection(downNode, 1);
+                Node currentNode = nodes.get(mapWidth*i+j);
+                //add collision here by looking at properties
+                if(current != null) {
+                    if(i != 0 && down!= null) {
+                        Node downNode = nodes.get(mapWidth*(i-1)+j);
+                        currentNode.createConnection(downNode,1);
                     }
-                    if(i != mapHeight-1 && up == null) {
-                        Node upNode = (Node) nodes.get(mapWidth * (i+1) + j);
-                        targetNode.createConnection(upNode, 1);
+                    if(i != mapHeight-1 && up != null) {
+                        Node upNode = nodes.get(mapHeight*(i+1)+j);
+                        currentNode.createConnection(upNode, 1);
                     }
-                    if(j != 0 && left == null) {
-                        Node leftNode = (Node) nodes.get(mapWidth * i + (j-1));
-                        targetNode.createConnection(leftNode, 1);
+                    if(j != 0 && left != null) {
+                        Node leftNode = nodes.get(mapWidth*i+(j-1));
+                        currentNode.createConnection(leftNode,1);
                     }
-                    if(j != mapWidth-1 && right == null) {
-                        Node rightNode = (Node) nodes.get(mapWidth * i + (j+1));
-                        targetNode.createConnection(rightNode, 1);
+                    if(j != mapWidth-1 && right != null) {
+                        Node rightNode = nodes.get(mapWidth*i+(j+1));
+                        currentNode.createConnection(rightNode,1);
                     }
                 }
             }
         }
 
-        graph = new Graph(nodes);
-
+        graph = new MyGraph(nodes);
         return graph;
     }
 

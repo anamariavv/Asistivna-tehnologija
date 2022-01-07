@@ -1,11 +1,11 @@
 package com.mygdx.game;
 
-public class Connection implements com.badlogic.gdx.ai.pfa.Connection {
-    public float cost;
-    public Node from;
-    public Node to;
+public class MyConnection<N> implements com.badlogic.gdx.ai.pfa.Connection<N> {
+    private float cost;
+    private N from;
+    private N to;
 
-    public Connection(Node from, Node to, float cost) {
+    public MyConnection(N from, N to, float cost) {
         this.from = from;
         this.to = to;
         this.cost = cost;
@@ -17,12 +17,12 @@ public class Connection implements com.badlogic.gdx.ai.pfa.Connection {
     }
 
     @Override
-    public Object getFromNode() {
+    public N getFromNode() {
         return from;
     }
 
     @Override
-    public Object getToNode() {
+    public N getToNode() {
         return to;
     }
 }

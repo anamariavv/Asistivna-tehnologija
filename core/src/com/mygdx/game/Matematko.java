@@ -30,19 +30,22 @@ public class Matematko extends Game {
 	public static float sfx_volume = 0.5f;
 	public static MapManager mapManager;
 
+	/* Todo
+	*   change some of the fields to static and clean up code */
+
 	@Override
 	public void create () {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1680, 1050); //false->y is up
 		batch = new SpriteBatch();
-		playerMatko = new Player();
 		textureAtlas = new TextureAtlas(Gdx.files.internal("Fonts & skins/skin.atlas"));
 		mainScreen = new MainMenuScreen(this);
 		optionsScreen = new OptionsScreen(this);
 		gameScreen = new GameScreen(this);
 		skin = new Skin();
 		sfx = new Array<Sound>();
-		MapManager.loadMap("Maps/Level 1.tmx");
+		mapManager = new MapManager();
+		playerMatko = new Player();
 
 		addSFX();
 		createFonts();

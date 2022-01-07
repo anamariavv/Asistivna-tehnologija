@@ -1,6 +1,5 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.ai.pfa.Graph;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -15,22 +14,23 @@ public class MapManager {
     public static int tilePixelWidth;
     public static int tilePixelHeight;
     public static TiledMap currentMap;
-    public static Graph graph;
+    public static MyGraph graph;
     public static OrthogonalTiledMapRenderer mapRenderer;
     public static GraphGenerator graphGenerator;
 
     public static void loadMap(String dir) {
         currentMap = new TmxMapLoader().load(dir);
         mapRenderer = new OrthogonalTiledMapRenderer(currentMap);
+        graphGenerator = new GraphGenerator();
 
         MapProperties properties = currentMap.getProperties();
         lvlTileWidth = properties.get("width", Integer.class);
         lvlTileHeight = properties.get("height", Integer.class);
-        lvlPixelWidth = properties.get("tilewidth", Integer.class);
-        lvlPixelHeight = properties.get("tileheight", Integer.class);
-        tilePixelWidth = lvlTileWidth*tilePixelWidth;
-        tilePixelHeight = lvlTileHeight*tilePixelHeight;
-        GraphGenerator.createGraph(currentMap);
+        tilePixelWidth = properties.get("tilewidth", Integer.class);
+        tilePixelHeight = properties.get("tileheight", Integer.class);
+        lvlPixelWidth = lvlTileWidth * tilePixelWidth;
+        lvlPixelHeight = lvlTileHeight * tilePixelHeight;
+        graph = graphGenerator.createGraph(currentMap);
     }
 
     public static void renderMap(OrthographicCamera camera) {

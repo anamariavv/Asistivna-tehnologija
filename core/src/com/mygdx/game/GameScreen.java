@@ -16,7 +16,7 @@ public class GameScreen implements Screen {
     public GameScreen(final Matematko game) {
         this.game = game;
         this.stage = new Stage(new StretchViewport(Matematko.W_WIDTH, Matematko.W_HEIGHT, game.camera));
-
+        MapManager.loadMap("Maps/Level 1.tmx");
     }
 
     public void update(float delta) {
@@ -26,8 +26,6 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-
-        //stage.addActor(game.playerMatko.characterImg);
     }
 
 
@@ -43,17 +41,12 @@ public class GameScreen implements Screen {
 
         game.batch.draw(game.playerMatko.walk_right.getKeyFrame(elapsed), game.playerMatko.characterRect.x, game.playerMatko.characterRect.y, 128,128);
 
-        //movement->play currently teleports...
+        //movement
         if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-
-            game.playerMatko.characterRect.setX(game.playerMatko.characterRect.getX()+10);
-
-            //float destination_x = Gdx.input.getX();
-            //float destination_y = Gdx.input.getY();
-            //game.playerMatko.move(destination_x, destination_y);
+            float destination_x = Gdx.input.getX();
+            float destination_y = Gdx.input.getY();
+            game.playerMatko.move(destination_x, destination_y);
         }
-
-
 
         game.batch.end();
 
