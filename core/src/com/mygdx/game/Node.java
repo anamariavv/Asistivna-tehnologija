@@ -7,6 +7,8 @@ import com.badlogic.gdx.utils.BinaryHeap;
 public class Node extends BinaryHeap.Node {
     public Array<Connection<Node>> connections = new Array<Connection<Node>>();
     int index;
+    int x;
+    int y;
 
     public Node(float value) {
         super(value);

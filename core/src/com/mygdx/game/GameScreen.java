@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -19,9 +20,6 @@ public class GameScreen implements Screen {
         MapManager.loadMap("Maps/Level 1.tmx");
     }
 
-    public void update(float delta) {
-        stage.act(delta);
-    }
 
     @Override
     public void show() {
@@ -39,18 +37,13 @@ public class GameScreen implements Screen {
 
         game.batch.begin();
 
-        game.batch.draw(game.playerMatko.walk_right.getKeyFrame(elapsed), game.playerMatko.characterRect.x, game.playerMatko.characterRect.y, 128,128);
-
-        //movement
         if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-            float destination_x = Gdx.input.getX();
-            float destination_y = Gdx.input.getY();
-            game.playerMatko.move(destination_x, destination_y);
+            game.playerMatko.findPath(new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0));
         }
 
-        game.batch.end();
+        game.batch.draw(game.playerMatko.walk_right.getKeyFrame(elapsed), game.playerMatko.currentPosition.x, game.playerMatko.currentPosition.y, 128,128);
 
-        update(delta);
+        game.batch.end();
 
         stage.draw();
     }

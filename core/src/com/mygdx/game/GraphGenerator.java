@@ -18,10 +18,11 @@ public class GraphGenerator {
         for(int i = 0; i < mapHeight; i++) { //i je y, j je x
             for(int j = 0; j < mapWidth; j++) {
                 Node node = new Node(1.0f);
+                node.x = i;
+                node.y = j;
                 nodes.add(node);
             }
         }
-
 
         for(int i = 0; i < mapHeight; i++) {
             for(int j = 0; j < mapWidth; j++) {
