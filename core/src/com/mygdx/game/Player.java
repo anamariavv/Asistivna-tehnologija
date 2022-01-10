@@ -71,7 +71,8 @@ public class Player extends Character {
             linearVelocity.set((float) MathUtils.cos(angle) * speed, (float) MathUtils.sin(angle) * speed);
             currentPosition.set(currentPosition.x + linearVelocity.x * delta, currentPosition.y + linearVelocity.y * delta);
 
-            if(waypointReached()){
+            if(waypointReached(delta)) {
+               currentPosition.set(waypointsArray.get(waypointNum));
                 if(waypointNum + 1 >= waypointsArray.size) {
                     waypointNum = 0;
                 } else {
@@ -81,9 +82,9 @@ public class Player extends Character {
         }
     }
 
-    private boolean waypointReached() {
-        return waypointsArray.get(waypointNum).x - currentPosition.x <= tolerance &&
-                waypointsArray.get(waypointNum).y - currentPosition.y <= tolerance;
+    private boolean waypointReached(float delta) {
+        return waypointsArray.get(waypointNum).x - currentPosition.x <= speed / tolerance * delta &&
+                waypointsArray.get(waypointNum).y - currentPosition.y <= speed/ tolerance * delta;
     }
 
 }
