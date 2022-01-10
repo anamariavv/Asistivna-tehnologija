@@ -3,21 +3,23 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
-import com.badlogic.gdx.ai.steer.behaviors.FollowPath;
-import com.badlogic.gdx.ai.steer.utils.paths.LinePath;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
 public class Player extends Character {
     private int health;
-    public float speed = 50;
+    public float speed = 10;
     public Animation<TextureRegion> walk_down, walk_up, walk_left, walk_right;
     private IndexedAStarPathFinder<Node> indexedPathFinder;
-    private DefaultGraphPath<Node> resultPath;;
+    private DefaultGraphPath<Node> resultPath;
+    private Array<Vector2> waypointsArray;
+    public int waypointNum = 0;
+    float tolerance = 3;
 
     public Player() {
         super("Mate Matko", "Sprites/Player/player_front_2.png", 128, 128, new Vector2(0,0));
@@ -49,19 +51,39 @@ public class Player extends Character {
         shape.end();
         shape.dispose();
 
-        Array<Vector2> waypointsArray = new Array<>();
+        waypointNum = 0;
+        waypointsArray = new Array<>();
         for(int i = 0; i < resultPath.nodes.size; i++) {
             Vector2 currentWaypoint = new Vector2(resultPath.nodes.get(i).worldx, resultPath.nodes.get(i).worldy);
             waypointsArray.add(currentWaypoint);
         }
 
-        LinePath<Vector2> waypoints = new LinePath<>(waypointsArray, true);
+       /*LinePath<Vector2> waypoints = new LinePath<>(waypointsArray, true);
         FollowPath<Vector2, LinePath.LinePathParam> followResultPath = new FollowPath<>(this,waypoints);
         followResultPath.setDecelerationRadius(100);
         followResultPath.setPathOffset(0);
-        setBehavior(followResultPath);
+        setBehavior(followResultPath);*/
     }
 
+    public void update(float delta) {
+        if(waypointsArray != null) {
+            float angle = (float) Math.atan2(waypointsArray.get(waypointNum).y - currentPosition.y, waypointsArray.get(waypointNum).x - currentPosition.x);
+            linearVelocity.set((float) MathUtils.cos(angle) * speed, (float) MathUtils.sin(angle) * speed);
+            currentPosition.set(currentPosition.x + linearVelocity.x * delta, currentPosition.y + linearVelocity.y * delta);
 
+            if(waypointReached()){
+                if(waypointNum + 1 >= waypointsArray.size) {
+                    waypointNum = 0;
+                } else {
+                    waypointNum++;
+                }
+            }
+        }
+    }
+
+    private boolean waypointReached() {
+        return waypointsArray.get(waypointNum).x - currentPosition.x <= tolerance &&
+                waypointsArray.get(waypointNum).y - currentPosition.y <= tolerance;
+    }
 
 }

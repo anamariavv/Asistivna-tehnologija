@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 
-public class Character extends SteeringEntity {
+public class Character {
     public Texture characterTex;
     public String spriteDir;
     public Rectangle characterRect;
@@ -20,7 +20,7 @@ public class Character extends SteeringEntity {
     public Vector2 linearVelocity;
 
     public Character(String name, String spriteDir, int width, int height, Vector2 currentPosition) {
-        super(currentPosition, 128, 0);
+        //super(currentPosition, 128, 0);
         this.name = name;
         this.currentPosition = currentPosition;
         this.spriteDir = spriteDir;
