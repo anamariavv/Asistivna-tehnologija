@@ -5,16 +5,18 @@ import com.badlogic.gdx.ai.steer.SteeringAcceleration;
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 
-public class SteeringEntity implements Steerable {
+public class SteeringEntity implements Steerable<Vector2> {
     Vector2 characterPosition;
+    Vector2 linearVelocity;
+
     boolean tagged;
     float characterRadius;
     float orientation;
     float maxLinearSpeed, maxLinearAcceleration;
     float maxAngularSpeed, maxAngularAcceleration;
+    float zeroLinearSpeedThreshold;
 
     SteeringBehavior<Vector2> behavior;
     SteeringAcceleration<Vector2> steeringOutput;
@@ -23,20 +25,46 @@ public class SteeringEntity implements Steerable {
         this.characterPosition = characterPosition;
         this.characterRadius = characterRadius;
         this.orientation = orientation;
+        this.maxLinearSpeed = 20;
+        this.maxLinearAcceleration = 0;
+        this.maxAngularSpeed = 10;
+        this.maxAngularAcceleration = 0;
+        this.zeroLinearSpeedThreshold = 0.5f;
+        this.linearVelocity = new Vector2(10,10);
+        this.steeringOutput = new SteeringAcceleration<Vector2>(new Vector2());
     }
 
     public void update(float delta) {
+        if(behavior != null) {
+            behavior.calculateSteering(steeringOutput);
+            applySteering(steeringOutput, delta);
+        }
+    }
 
+    private void applySteering(SteeringAcceleration<Vector2> steeringOutput, float delta) {
+        this.characterPosition.mulAdd(this.linearVelocity, delta);
+        this.linearVelocity.mulAdd(steeringOutput.linear, delta);
+        System.out.println("Velocity: " + this.linearVelocity);
     }
 
     @Override
-    public Vector getLinearVelocity() {
-        return new Vector2(1,1);
+    public float vectorToAngle(Vector2 vector) {
+        return (float)MathUtils.atan2(vector.y, vector.x);
+    }
+
+    @Override
+    public Vector2 angleToVector(Vector2 outVector, float angle) {
+        return new Vector2(-(float)MathUtils.sin(angle), (float)MathUtils.cos(angle));
+    }
+
+    @Override
+    public Vector2 getLinearVelocity() {
+        return linearVelocity;
     }
 
     @Override
     public float getAngularVelocity() {
-        return 1;
+        return 10;
     }
 
     @Override
@@ -56,12 +84,12 @@ public class SteeringEntity implements Steerable {
 
     @Override
     public float getZeroLinearSpeedThreshold() {
-        return 0;
+        return zeroLinearSpeedThreshold;
     }
 
     @Override
     public void setZeroLinearSpeedThreshold(float value) {
-
+        this.zeroLinearSpeedThreshold = value;
     }
 
     @Override
@@ -105,14 +133,13 @@ public class SteeringEntity implements Steerable {
     }
 
     @Override
-    public Vector getPosition() {
+    public Vector2 getPosition() {
         return characterPosition;
     }
 
     @Override
     public float getOrientation() {
         return 0; //get the angle of the character
-        //Todo implement angle tracking (maybe a vector or just a field with a value in the character class)
     }
 
     @Override
@@ -120,16 +147,6 @@ public class SteeringEntity implements Steerable {
         this.orientation = orientation;
     }
 
-    @Override
-    public float vectorToAngle(Vector vector) {
-        //what the hell
-        return (float)MathUtils.atan2(this.characterPosition.x, this.characterPosition.y);
-    }
-
-    @Override
-    public Vector angleToVector(Vector outVector, float angle) {
-        return new Vector2(-(float)MathUtils.sin(angle), (float)MathUtils.cos(angle));
-    }
 
     @Override
     public Location newLocation() {

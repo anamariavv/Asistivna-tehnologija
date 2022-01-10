@@ -38,9 +38,9 @@ public class GameScreen implements Screen {
         game.batch.begin();
 
         if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-            game.playerMatko.findPath(new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0));
+            game.playerMatko.findPath(game.camera.unproject(new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0)));
         }
-
+        game.playerMatko.update(elapsed);
         game.batch.draw(game.playerMatko.walk_right.getKeyFrame(elapsed), game.playerMatko.currentPosition.x, game.playerMatko.currentPosition.y, 128,128);
 
         game.batch.end();

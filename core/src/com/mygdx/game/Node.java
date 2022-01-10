@@ -9,10 +9,16 @@ public class Node extends BinaryHeap.Node {
     int index;
     int x;
     int y;
+    float worldx;
+    float worldy;
 
-    public Node(float value) {
+    public Node(float value, int x, int y) {
         super(value);
+        this.x = x;
+        this.y = y;
         index = Node.Indexer.getIndex();
+        worldx = x * MapManager.tilePixelWidth;
+        worldy = y * MapManager.tilePixelHeight;
     }
 
     public Array<Connection<Node>> getConnections(Node node) {

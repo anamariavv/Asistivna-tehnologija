@@ -17,6 +17,7 @@ public class Character extends SteeringEntity {
     public String name;
     public Vector2 currentPosition;
     public float orientation;
+    public Vector2 linearVelocity;
 
     public Character(String name, String spriteDir, int width, int height, Vector2 currentPosition) {
         super(currentPosition, 128, 0);
@@ -33,6 +34,22 @@ public class Character extends SteeringEntity {
         characterRect.setHeight(128);
         characterRect.setY(0);
         orientation = 0;
+        linearVelocity = new Vector2(10,10);
     }
 
+    public Vector2 getLinearVelocity() {
+        return linearVelocity;
+    }
+
+    public void setLinearVelocity(Vector2 linearVelocity) {
+        this.linearVelocity = linearVelocity;
+    }
+
+    public void setOrientation(float orientation) {
+        this.orientation = orientation;
+    }
+
+    public float getOrientation() {
+        return orientation;
+    }
 }
