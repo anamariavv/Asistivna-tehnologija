@@ -34,7 +34,7 @@ public class CameraTools {
         if(position.x > startX + width) {
             position.x = startX + width;
         }
-        if(position.y > height) {
+        if(position.y > startY + height) {
             position.y = startY + height;
         }
 

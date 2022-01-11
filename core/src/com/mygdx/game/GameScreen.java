@@ -36,7 +36,7 @@ public class GameScreen implements Screen {
         elapsed += Gdx.graphics.getDeltaTime();
 
         MapManager.renderMap(game.camera);
-
+        game.batch.setProjectionMatrix(game.camera.combined);
         game.batch.begin();
 
         if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
@@ -44,7 +44,7 @@ public class GameScreen implements Screen {
         }
         game.playerMatko.update(elapsed);
         cameraUpdate();
-        game.batch.draw(game.playerMatko.walk_right.getKeyFrame(elapsed), game.playerMatko.currentPosition.x, game.playerMatko.currentPosition.y, 128,128);
+        game.batch.draw(game.playerMatko.characterTex, game.playerMatko.currentPosition.x, game.playerMatko.currentPosition.y, 128,128);
 
         System.out.println();
         game.batch.end();
@@ -53,12 +53,25 @@ public class GameScreen implements Screen {
     }
 
     private void cameraUpdate() {
-        CameraTools.lockOnPlayer(game.camera, game.playerMatko.currentPosition);
-        //CameraTools.lerpToPlayer(game.camera, game.playerMatko.currentPosition);
+       /* if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            game.camera.translate(0, 10, 0);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            game.camera.translate(0, -10, 0);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            game.camera.translate(-10, 0, 0);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            game.camera.translate(10, 0, 0);
+        }*/
+
+        //CameraTools.lockOnPlayer(game.camera, game.playerMatko.currentPosition);
+        CameraTools.lerpToPlayer(game.camera, game.playerMatko.currentPosition);
         float startX = game.camera.viewportWidth / 2;
         float startY = game.camera.viewportHeight / 2;
         CameraTools.boundary(game.camera, startX, startY, MapManager.lvlTileWidth * MapManager.tilePixelWidth - startX*2,
-                MapManager.lvlTileHeight * MapManager.lvlPixelHeight - startY*2);
+                MapManager.lvlTileHeight * MapManager.tilePixelHeight - startY*2);
     }
 
     @Override

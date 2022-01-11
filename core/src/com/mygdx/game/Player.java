@@ -37,8 +37,8 @@ public class Player extends Character {
         Node endNode = MapManager.graph.getNodeXY((int) endCoords.x, (int) endCoords.y);
         indexedPathFinder.searchNodePath(startNode, endNode, new MyHeuristic(), resultPath);
 
-       /*//pathdebugging
-       ShapeRenderer shape = new ShapeRenderer();
+       //pathdebugging
+        /*ShapeRenderer shape = new ShapeRenderer();
         shape.begin(ShapeRenderer.ShapeType.Line);
         shape.setColor(1,1,0,1);
         float oldx = resultPath.nodes.get(0).worldx;
@@ -82,7 +82,7 @@ public class Player extends Character {
 
     private boolean waypointReached(float delta) {
         return waypointsArray.get(waypointNum).x - currentPosition.x <= speed / tolerance * delta &&
-                waypointsArray.get(waypointNum).y - currentPosition.y <= speed/ tolerance * delta;
+                waypointsArray.get(waypointNum).y - currentPosition.y <= speed / tolerance * delta;
     }
 
 }
