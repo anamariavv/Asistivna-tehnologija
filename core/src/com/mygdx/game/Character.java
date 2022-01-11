@@ -2,7 +2,6 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
@@ -10,7 +9,6 @@ import com.badlogic.gdx.utils.Array;
 public class Character {
     public Texture characterTex;
     public String spriteDir;
-    public Rectangle characterRect;
     public Array<Item> inventory;
     public Image characterImg;
     private int id;
@@ -25,13 +23,8 @@ public class Character {
         this.spriteDir = spriteDir;
         characterTex = new Texture(Gdx.files.internal(this.spriteDir));
         characterImg = new Image(this.characterTex);
-        characterRect = new Rectangle();
         characterImg.setWidth(width);
         characterImg.setHeight(height);
-        characterRect.setX(0);
-        characterRect.setWidth(128);
-        characterRect.setHeight(128);
-        characterRect.setY(0);
         orientation = 0;
         linearVelocity = new Vector2(0,0);
     }
