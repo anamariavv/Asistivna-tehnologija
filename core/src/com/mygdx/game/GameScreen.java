@@ -13,11 +13,14 @@ public class GameScreen implements Screen {
     private final Matematko game;
     private Stage stage;
     float elapsed;
+    private HUD hud;
 
     public GameScreen(final Matematko game) {
         this.game = game;
-        this.stage = new Stage(new StretchViewport(Matematko.W_WIDTH, Matematko.W_HEIGHT, game.camera));
+        stage = new Stage(new StretchViewport(Matematko.W_WIDTH, Matematko.W_HEIGHT, game.camera));
         MapManager.loadMap("Maps/Level 1.tmx");
+        hud = new HUD(game.batch, 3);
+        game.batch.setProjectionMatrix(game.camera.combined);
     }
 
     @Override
@@ -28,7 +31,6 @@ public class GameScreen implements Screen {
         game.currentMusic.play();
     }
 
-
     @Override
     public void render(float delta) {
         ScreenUtils.clear(Color.BLACK);
@@ -36,20 +38,19 @@ public class GameScreen implements Screen {
         elapsed += Gdx.graphics.getDeltaTime();
 
         MapManager.renderMap(game.camera);
-        game.batch.setProjectionMatrix(game.camera.combined);
-        game.batch.begin();
 
+        game.batch.begin();
         if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             game.playerMatko.findPath(game.camera.unproject(new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0)));
         }
         game.playerMatko.update(elapsed);
         cameraUpdate();
         game.batch.draw(game.playerMatko.characterTex, game.playerMatko.currentPosition.x, game.playerMatko.currentPosition.y, 128,128);
-
-        System.out.println();
         game.batch.end();
 
         stage.draw();
+        hud.stage.draw();
+
     }
 
     private void cameraUpdate() {
@@ -66,7 +67,6 @@ public class GameScreen implements Screen {
             game.camera.translate(10, 0, 0);
         }*/
 
-        //CameraTools.lockOnPlayer(game.camera, game.playerMatko.currentPosition);
         CameraTools.lerpToPlayer(game.camera, game.playerMatko.currentPosition);
         float startX = game.camera.viewportWidth / 2;
         float startY = game.camera.viewportHeight / 2;
@@ -96,6 +96,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        stage.dispose();
+        hud.stage.dispose();
     }
 }

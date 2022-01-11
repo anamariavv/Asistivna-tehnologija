@@ -85,6 +85,7 @@ public class Matematko extends Game {
 	
 	@Override
 	public void dispose () {
+		System.out.println("Matematko disposed");
 		batch.dispose();
 		font36.dispose();
 		mainScreen.dispose();

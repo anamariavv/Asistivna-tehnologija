@@ -19,7 +19,8 @@ public class Player extends Character {
     private Array<Vector2> waypointsArray;
     public int waypointNum = 0;
     private boolean finalWaypoint = false;
-    float tolerance = 3;
+    private float tolerance = 3;
+    public int coins = 0;
 
     public Player() {
         super("Mate Matko", "Sprites/Player/player_front_2.png", 128, 128, new Vector2(500,500));
