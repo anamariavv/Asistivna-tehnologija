@@ -27,7 +27,8 @@ public class Matematko extends Game {
 	public Music currentMusic;
 	public Skin skin;
 	public Array<Sound> sfx;
-	public static float sfx_volume = 0.5f;
+	public static float musicVolume = 0.9f;
+	public static float sfxVolume = 0.5f;
 	public static MapManager mapManager;
 
 	/* Todo
@@ -35,8 +36,7 @@ public class Matematko extends Game {
 
 	@Override
 	public void create () {
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 1680, 1050); //false->y is up
+		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		batch = new SpriteBatch();
 		textureAtlas = new TextureAtlas(Gdx.files.internal("Fonts & skins/skin.atlas"));
 		mainScreen = new MainMenuScreen(this);
@@ -56,7 +56,7 @@ public class Matematko extends Game {
 
 		currentMusic = Gdx.audio.newMusic(Gdx.files.internal("Sound/music_4.wav"));
 		currentMusic.setLooping(true);
-		currentMusic.setVolume(0.9f);
+		currentMusic.setVolume(musicVolume);
 
 		this.setScreen(mainScreen);
 	}
@@ -91,5 +91,6 @@ public class Matematko extends Game {
 		optionsScreen.dispose();
 		currentMusic.dispose();
 		sfx.clear();
+		currentMusic.dispose();
 	}
 }

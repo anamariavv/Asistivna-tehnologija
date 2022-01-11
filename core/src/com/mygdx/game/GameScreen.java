@@ -20,10 +20,12 @@ public class GameScreen implements Screen {
         MapManager.loadMap("Maps/Level 1.tmx");
     }
 
-
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
+        game.currentMusic = Gdx.audio.newMusic(Gdx.files.internal("Sound/music_2.wav"));
+        game.currentMusic.setVolume(game.musicVolume);
+        game.currentMusic.play();
     }
 
 
@@ -41,11 +43,22 @@ public class GameScreen implements Screen {
             game.playerMatko.findPath(game.camera.unproject(new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0)));
         }
         game.playerMatko.update(elapsed);
+        cameraUpdate();
         game.batch.draw(game.playerMatko.walk_right.getKeyFrame(elapsed), game.playerMatko.currentPosition.x, game.playerMatko.currentPosition.y, 128,128);
 
+        System.out.println();
         game.batch.end();
 
         stage.draw();
+    }
+
+    private void cameraUpdate() {
+        CameraTools.lockOnPlayer(game.camera, game.playerMatko.currentPosition);
+        //CameraTools.lerpToPlayer(game.camera, game.playerMatko.currentPosition);
+        float startX = game.camera.viewportWidth / 2;
+        float startY = game.camera.viewportHeight / 2;
+        CameraTools.boundary(game.camera, startX, startY, MapManager.lvlTileWidth * MapManager.tilePixelWidth - startX*2,
+                MapManager.lvlTileHeight * MapManager.lvlPixelHeight - startY*2);
     }
 
     @Override
