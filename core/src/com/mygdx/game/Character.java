@@ -20,7 +20,6 @@ public class Character {
     public Vector2 linearVelocity;
 
     public Character(String name, String spriteDir, int width, int height, Vector2 currentPosition) {
-        //super(currentPosition, 128, 0);
         this.name = name;
         this.currentPosition = currentPosition;
         this.spriteDir = spriteDir;
@@ -34,7 +33,7 @@ public class Character {
         characterRect.setHeight(128);
         characterRect.setY(0);
         orientation = 0;
-        linearVelocity = new Vector2(10,10);
+        linearVelocity = new Vector2(0,0);
     }
 
     public Vector2 getLinearVelocity() {
