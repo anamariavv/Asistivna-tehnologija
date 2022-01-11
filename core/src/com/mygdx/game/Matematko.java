@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.LongArray;
 
 public class Matematko extends Game {
 	public static final int W_WIDTH = 1680;
@@ -29,19 +28,24 @@ public class Matematko extends Game {
 	public Skin skin;
 	public Array<Sound> sfx;
 	public static float sfx_volume = 0.5f;
+	public static MapManager mapManager;
+
+	/* Todo
+	*   change some of the fields to static and clean up code */
 
 	@Override
 	public void create () {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1680, 1050); //false->y is up
 		batch = new SpriteBatch();
-		playerMatko = new Player();
 		textureAtlas = new TextureAtlas(Gdx.files.internal("Fonts & skins/skin.atlas"));
 		mainScreen = new MainMenuScreen(this);
 		optionsScreen = new OptionsScreen(this);
 		gameScreen = new GameScreen(this);
 		skin = new Skin();
 		sfx = new Array<Sound>();
+		mapManager = new MapManager();
+		playerMatko = new Player();
 
 		addSFX();
 		createFonts();
