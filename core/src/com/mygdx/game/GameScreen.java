@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -14,13 +15,14 @@ public class GameScreen implements Screen {
     private Stage stage;
     float elapsed;
     private HUD hud;
+    private SpriteBatch hudBatch;
 
     public GameScreen(final Matematko game) {
         this.game = game;
         stage = new Stage(new StretchViewport(Matematko.W_WIDTH, Matematko.W_HEIGHT, game.camera));
         MapManager.loadMap("Maps/Level 1.tmx");
-        hud = new HUD(game.batch, 3);
-        game.batch.setProjectionMatrix(game.camera.combined);
+        hudBatch = new SpriteBatch();
+        hud = new HUD(game.batch, 0);
     }
 
     @Override
@@ -39,6 +41,8 @@ public class GameScreen implements Screen {
 
         MapManager.renderMap(game.camera);
 
+        game.batch.setProjectionMatrix(game.camera.combined);
+
         game.batch.begin();
         if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             game.playerMatko.findPath(game.camera.unproject(new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0)));
@@ -48,7 +52,12 @@ public class GameScreen implements Screen {
         game.batch.draw(game.playerMatko.characterTex, game.playerMatko.currentPosition.x, game.playerMatko.currentPosition.y, 128,128);
         game.batch.end();
 
+        stage.act(elapsed);
         stage.draw();
+
+        //Todo udate hud coins based on player coin count
+        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+        hud.stage.act(elapsed);
         hud.stage.draw();
 
     }

@@ -11,27 +11,31 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class HUD {
+public class HUD implements Disposable {
     public Stage stage;
     private Viewport viewport;
-    private int coins;
-    private Skin skin;
-    private Table table;
-    private Label coinLabel, coinAmountLabel;
-    //add labels and other scene2d elements here (maybe a container containing elements or a table)
+    public int coins;
+    public Skin skin;
+    public Label coinText, coinAmountText;
+    public TextButton pauseButton;
+    public Table table;
 
     public HUD(SpriteBatch batch, int coins) {
         viewport = new StretchViewport(Matematko.W_WIDTH, Matematko.W_HEIGHT, new OrthographicCamera());
+        stage = new Stage(viewport, batch);
+        Gdx.input.setInputProcessor(stage);
         this.coins = coins;
 
         TextureAtlas textureAtlas = new TextureAtlas(Gdx.files.internal("Fonts & skins/skin.atlas"));
         FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("Fonts & skins/Pixel NES.otf"));
         FreeTypeFontGenerator.FreeTypeFontParameter params = new FreeTypeFontGenerator.FreeTypeFontParameter();
         BitmapFont font36 = fontGenerator.generateFont(params);
-        params.size = 28;
+        params.size = 36;
         params.color = Color.WHITE;
 
         this.skin = new Skin();
@@ -39,13 +43,23 @@ public class HUD {
         skin.add("default", font36);
         skin.load(Gdx.files.internal("Fonts & skins/skin.json"));
 
-        stage = new Stage(viewport, batch);
-        table = new Table();
-        coinLabel = new Label("Broj kovanica: ", skin, "default");
-        coinAmountLabel = new Label(String.format("%d", coins), skin, "default");
+        coinText = new Label("Broj kovanica: ", skin, "default");
+        coinAmountText = new Label(String.format("%d", coins), skin, "default");
+        pauseButton = new TextButton("Pauza", skin, "default");
 
-        table.setPosition(Matematko.W_WIDTH/2,0);
-        table.add(coinLabel);
-        table.add(coinAmountLabel);
+        table = new Table();
+        //table.setDebug(true);
+        table.defaults().minWidth(200).minHeight(80);
+        table.setPosition( Matematko.W_WIDTH - 400, Matematko.W_HEIGHT-50);
+        table.add(coinText);
+        table.add(coinAmountText);
+        table.add(pauseButton);
+        stage.addActor(table);
+    }
+
+    @Override
+    public void dispose() {
+        stage.dispose();
+        skin.dispose();
     }
 }

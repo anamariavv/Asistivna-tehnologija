@@ -20,7 +20,7 @@ public class Player extends Character {
     public int waypointNum = 0;
     private boolean finalWaypoint = false;
     private float tolerance = 3;
-    public int coins = 0;
+    public int coins;
 
     public Player() {
         super("Mate Matko", "Sprites/Player/player_front_2.png", 128, 128, new Vector2(500,500));
@@ -30,6 +30,7 @@ public class Player extends Character {
         walk_left = GifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, Gdx.files.internal("Sprites/Player/player_walk_left.gif").read());
         walk_right = GifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, Gdx.files.internal("Sprites/Player/player_walk_right.gif").read());
         indexedPathFinder = new IndexedAStarPathFinder<Node>(MapManager.graph, false);
+        coins = 5;
     }
 
     public void findPath(Vector3 endCoords) {

@@ -47,6 +47,7 @@ public class Matematko extends Game {
 		mapManager = new MapManager();
 		playerMatko = new Player();
 
+
 		addSFX();
 		createFonts();
 
