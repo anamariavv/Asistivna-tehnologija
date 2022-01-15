@@ -7,11 +7,13 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -24,8 +26,10 @@ public class HUD implements Disposable {
     public Label coinText, coinAmountText;
     public TextButton pauseButton;
     public Table table;
+    private final Matematko game;
 
-    public HUD(SpriteBatch batch, int coins) {
+    public HUD(SpriteBatch batch, int coins, final Matematko game) {
+        this.game = game;
         viewport = new StretchViewport(Matematko.W_WIDTH, Matematko.W_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, batch);
         Gdx.input.setInputProcessor(stage);
@@ -47,13 +51,23 @@ public class HUD implements Disposable {
         coinAmountText = new Label(String.format("%d", coins), skin, "default");
         pauseButton = new TextButton("Pauza", skin, "default");
 
+        coinText.setFontScale(1.5f,1.5f);
+        coinAmountText.setFontScale(2f,2f);
+        coinText.getStyle().fontColor = Color.WHITE;
+        pauseButton.getLabel().setFontScale(1.5f,1.5f);
+
+        pauseButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.setScreen(game.pauseScreen);
+            }
+        });
+
         table = new Table();
-        //table.setDebug(true);
-        table.defaults().minWidth(200).minHeight(80);
-        table.setPosition( Matematko.W_WIDTH - 400, Matematko.W_HEIGHT-50);
-        table.add(coinText);
-        table.add(coinAmountText);
-        table.add(pauseButton);
+        table.setPosition( Matematko.W_WIDTH/2 - table.getWidth(), Matematko.W_HEIGHT-50);
+        table.add(coinText).width(250).height(80).padRight(30);
+        table.add(coinAmountText).width(50).height(80).padRight(30);
+        table.add(pauseButton).width(250).height(80);
         stage.addActor(table);
     }
 

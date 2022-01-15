@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class Player extends Character {
     private int health;
-    public float speed = 5;
+    public float speed = 400;
     public Animation<TextureRegion> walk_down, walk_up, walk_left, walk_right;
     private IndexedAStarPathFinder<Node> indexedPathFinder;
     private DefaultGraphPath<Node> resultPath;
@@ -65,13 +65,12 @@ public class Player extends Character {
     public void update(float delta) {
         if(waypointsArray != null && finalWaypoint == false) {
             //Todo draw moving animation based on movement angle
-            //Todo fix buggy movement :(
             float angle = (float) Math.atan2(waypointsArray.get(waypointNum).y - currentPosition.y, waypointsArray.get(waypointNum).x - currentPosition.x);
             linearVelocity.set((float) MathUtils.cos(angle) * speed, (float) MathUtils.sin(angle) * speed);
             currentPosition.set(currentPosition.x + linearVelocity.x * delta, currentPosition.y + linearVelocity.y * delta);
 
             if(waypointReached(delta)) {
-               currentPosition.set(waypointsArray.get(waypointNum));
+                currentPosition.set(waypointsArray.get(waypointNum));
                 if(waypointNum + 1 >= waypointsArray.size) {
                     waypointNum = 0;
                     finalWaypoint = true;

@@ -22,12 +22,14 @@ public class GameScreen implements Screen {
         stage = new Stage(new StretchViewport(Matematko.W_WIDTH, Matematko.W_HEIGHT, game.camera));
         MapManager.loadMap("Maps/Level 1.tmx");
         hudBatch = new SpriteBatch();
-        hud = new HUD(game.batch, 0);
+        hud = new HUD(game.batch, 0, game);
+        game.multiplexer.addProcessor(stage);
+        game.multiplexer.addProcessor(hud.stage);
+        Gdx.input.setInputProcessor(game.multiplexer);
     }
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(stage);
         game.currentMusic = Gdx.audio.newMusic(Gdx.files.internal("Sound/music_2.wav"));
         game.currentMusic.setVolume(game.musicVolume);
         game.currentMusic.play();
@@ -37,7 +39,7 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         ScreenUtils.clear(Color.BLACK);
 
-        elapsed += Gdx.graphics.getDeltaTime();
+       // elapsed += Gdx.graphics.getDeltaTime();
 
         MapManager.renderMap(game.camera);
 
@@ -47,17 +49,17 @@ public class GameScreen implements Screen {
         if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             game.playerMatko.findPath(game.camera.unproject(new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0)));
         }
-        game.playerMatko.update(elapsed);
+        game.playerMatko.update(delta);
         cameraUpdate();
         game.batch.draw(game.playerMatko.characterTex, game.playerMatko.currentPosition.x, game.playerMatko.currentPosition.y, 128,128);
         game.batch.end();
 
-        stage.act(elapsed);
+        stage.act(delta);
         stage.draw();
 
         //Todo udate hud coins based on player coin count
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
-        hud.stage.act(elapsed);
+        hud.stage.act(delta);
         hud.stage.draw();
 
     }

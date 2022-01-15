@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
@@ -23,6 +24,7 @@ public class Matematko extends Game {
 	public MainMenuScreen mainScreen;
 	public OptionsScreen optionsScreen;
 	public GameScreen gameScreen;
+	public PauseScreen pauseScreen;
 	public TextureAtlas textureAtlas;
 	public Music currentMusic;
 	public Skin skin;
@@ -30,6 +32,7 @@ public class Matematko extends Game {
 	public static float musicVolume = 0.9f;
 	public static float sfxVolume = 0.5f;
 	public static MapManager mapManager;
+	public InputMultiplexer multiplexer;
 
 	/* Todo
 	*   change some of the fields to static and clean up code */
@@ -39,14 +42,15 @@ public class Matematko extends Game {
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		batch = new SpriteBatch();
 		textureAtlas = new TextureAtlas(Gdx.files.internal("Fonts & skins/skin.atlas"));
+		multiplexer = new InputMultiplexer();
 		mainScreen = new MainMenuScreen(this);
 		optionsScreen = new OptionsScreen(this);
 		gameScreen = new GameScreen(this);
+		pauseScreen = new PauseScreen(this);
 		skin = new Skin();
 		sfx = new Array<Sound>();
 		mapManager = new MapManager();
 		playerMatko = new Player();
-
 
 		addSFX();
 		createFonts();
