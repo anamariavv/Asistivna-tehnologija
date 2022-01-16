@@ -77,9 +77,7 @@ public class OptionsScreen implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(Color.BLACK);
-
         update(delta);
-
         stage.draw();
     }
 

@@ -1,5 +1,12 @@
 package com.mygdx.game;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.parallel;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -12,7 +19,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class MainMenuScreen implements Screen {
     private final Matematko game;
@@ -93,6 +99,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void show() {
+        game.camera.setToOrtho(false);
         Gdx.input.setInputProcessor(stage);
         game.currentMusic.play();
         Texture titleTexture = new Texture(Gdx.files.internal("Fonts & skins/Matematko.png"));
@@ -117,13 +124,13 @@ public class MainMenuScreen implements Screen {
     ;}
 
     @Override
-    public void pause() { System.out.println("paused Mainmenu");}
+    public void pause() {}
 
     @Override
-    public void resume() { System.out.println("unpasued Mainmenu");}
+    public void resume() {}
 
     @Override
-    public void hide() { System.out.println("hidden Mainmenu");
+    public void hide() {
         stage.clear();
     ;}
 
