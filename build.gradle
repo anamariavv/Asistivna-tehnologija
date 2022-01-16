@@ -6,11 +6,11 @@ buildscript {
         mavenCentral()
         gradlePluginPortal()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
         google()
     }
     dependencies {
-        
-
+        classpath "com.badlogicgames.gdx:gdx-ai:1.8.1"
     }
 }
 
@@ -35,6 +35,7 @@ allprojects {
         gradlePluginPortal()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+
     }
 }
 
@@ -71,6 +72,7 @@ project(":core") {
         api "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
         api "net.dermetfan.libgdx-utils:libgdx-utils:0.13.4"
         api "de.tomgrill.gdxdialogs:gdx-dialogs-core:1.2.5"
+        compile "com.badlogicgames.gdx:gdx-ai:1.8.1"
         
     }
 }

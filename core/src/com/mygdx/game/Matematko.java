@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
@@ -12,7 +13,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.LongArray;
 
 public class Matematko extends Game {
 	public static final int W_WIDTH = 1680;
@@ -23,23 +23,34 @@ public class Matematko extends Game {
 	public Player playerMatko;
 	public MainMenuScreen mainScreen;
 	public OptionsScreen optionsScreen;
+	public GameScreen gameScreen;
+	public PauseScreen pauseScreen;
 	public TextureAtlas textureAtlas;
 	public Music currentMusic;
 	public Skin skin;
 	public Array<Sound> sfx;
-	public static float sfx_volume = 0.5f;
+	public static float musicVolume = 0.9f;
+	public static float sfxVolume = 0.5f;
+	public static MapManager mapManager;
+	public InputMultiplexer multiplexer;
+
+	/* Todo
+	*   change some of the fields to static and clean up code */
 
 	@Override
 	public void create () {
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 1680, 1050); //false->y is up
+		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		batch = new SpriteBatch();
-		playerMatko = new Player();
 		textureAtlas = new TextureAtlas(Gdx.files.internal("Fonts & skins/skin.atlas"));
+		multiplexer = new InputMultiplexer();
 		mainScreen = new MainMenuScreen(this);
 		optionsScreen = new OptionsScreen(this);
+		gameScreen = new GameScreen(this);
+		pauseScreen = new PauseScreen(this);
 		skin = new Skin();
 		sfx = new Array<Sound>();
+		mapManager = new MapManager();
+		playerMatko = new Player();
 
 		addSFX();
 		createFonts();
@@ -50,7 +61,7 @@ public class Matematko extends Game {
 
 		currentMusic = Gdx.audio.newMusic(Gdx.files.internal("Sound/music_4.wav"));
 		currentMusic.setLooping(true);
-		currentMusic.setVolume(0.9f);
+		currentMusic.setVolume(musicVolume);
 
 		this.setScreen(mainScreen);
 	}
@@ -79,11 +90,13 @@ public class Matematko extends Game {
 	
 	@Override
 	public void dispose () {
+		System.out.println("Matematko disposed");
 		batch.dispose();
 		font36.dispose();
 		mainScreen.dispose();
 		optionsScreen.dispose();
 		currentMusic.dispose();
 		sfx.clear();
+		currentMusic.dispose();
 	}
 }

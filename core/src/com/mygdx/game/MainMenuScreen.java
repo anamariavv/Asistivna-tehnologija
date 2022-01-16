@@ -1,24 +1,24 @@
 package com.mygdx.game;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.parallel;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class MainMenuScreen implements Screen {
     private final Matematko game;
@@ -43,15 +43,16 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                  game.sfx.get(1).play(0.3f);
-                 stage.addAction(fadeOut(2f));
+                 stage.addAction(fadeOut(1f)); //doesn't work, dk why??
                  game.currentMusic.stop();
+                 game.setScreen(game.gameScreen);
             }
         });
 
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.sfx.get(0).play(game.sfx_volume);
+                game.sfx.get(0).play(game.sfxVolume);
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -64,7 +65,7 @@ public class MainMenuScreen implements Screen {
         settingButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.sfx.get(0).play(game.sfx_volume);
+                game.sfx.get(0).play(game.sfxVolume);
                 game.setScreen(game.optionsScreen);
             }
         });
@@ -98,14 +99,14 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void show() {
-
+        game.camera.setToOrtho(false);
         Gdx.input.setInputProcessor(stage);
         game.currentMusic.play();
         Texture titleTexture = new Texture(Gdx.files.internal("Fonts & skins/Matematko.png"));
 
         titleImage = new Image(titleTexture);
         titleImage.setPosition(stage.getWidth()/2 - 564/2, stage.getHeight()/2 + 300);
-        titleImage.addAction(sequence(alpha(0f), parallel(moveBy(0,-100,3f), fadeIn(3f))));
+        titleImage.addAction(sequence(alpha(0f), parallel(moveBy(0,-90,1.5f), fadeIn(2f))));
         game.playerMatko.characterImg.setPosition(Matematko.W_WIDTH/2+200, Matematko.W_HEIGHT/2-300);
         game.playerMatko.characterImg.setWidth(256);
         game.playerMatko.characterImg.setHeight(256);
@@ -123,13 +124,13 @@ public class MainMenuScreen implements Screen {
     ;}
 
     @Override
-    public void pause() { System.out.println("paused Mainmenu");}
+    public void pause() {}
 
     @Override
-    public void resume() { System.out.println("unpasued Mainmenu");}
+    public void resume() {}
 
     @Override
-    public void hide() { System.out.println("hidden Mainmenu");
+    public void hide() {
         stage.clear();
     ;}
 
