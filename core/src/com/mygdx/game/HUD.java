@@ -20,7 +20,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class HUD implements Disposable {
     public Stage stage;
-    private Viewport viewport;
+    public Viewport viewport;
     public int coins;
     public Skin skin;
     public Label coinText, coinAmountText;
@@ -60,6 +60,8 @@ public class HUD implements Disposable {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 game.setScreen(game.pauseScreen);
+                game.sfx.get(0).play(game.sfxVolume);
+                event.handle();
             }
         });
 

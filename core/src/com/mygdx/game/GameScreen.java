@@ -13,7 +13,6 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 public class GameScreen implements Screen {
     private final Matematko game;
     private Stage stage;
-    float elapsed;
     private HUD hud;
     private SpriteBatch hudBatch;
 
@@ -23,9 +22,6 @@ public class GameScreen implements Screen {
         MapManager.loadMap("Maps/Level 1.tmx");
         hudBatch = new SpriteBatch();
         hud = new HUD(game.batch, 0, game);
-        game.multiplexer.addProcessor(stage);
-        game.multiplexer.addProcessor(hud.stage);
-        Gdx.input.setInputProcessor(game.multiplexer);
     }
 
     @Override
@@ -33,20 +29,22 @@ public class GameScreen implements Screen {
         game.currentMusic = Gdx.audio.newMusic(Gdx.files.internal("Sound/music_2.wav"));
         game.currentMusic.setVolume(game.musicVolume);
         game.currentMusic.play();
+        game.multiplexer.addProcessor(hud.stage);
+        game.multiplexer.addProcessor(stage);
+        Gdx.input.setInputProcessor(game.multiplexer);
     }
 
     @Override
     public void render(float delta) {
         ScreenUtils.clear(Color.BLACK);
 
-       // elapsed += Gdx.graphics.getDeltaTime();
-
         MapManager.renderMap(game.camera);
 
         game.batch.setProjectionMatrix(game.camera.combined);
 
         game.batch.begin();
-        if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+        //Todo player still moves even thought HUD button was pressed -> fix this
+        if(Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
             game.playerMatko.findPath(game.camera.unproject(new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0)));
         }
         game.playerMatko.update(delta);
@@ -102,12 +100,13 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-
+        stage.clear();
+        game.currentMusic.pause();
     }
 
     @Override
     public void dispose() {
         stage.dispose();
-        hud.stage.dispose();
+        hud.dispose();
     }
 }

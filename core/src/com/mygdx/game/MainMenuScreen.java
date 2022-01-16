@@ -99,6 +99,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void show() {
+        game.camera.setToOrtho(false);
         Gdx.input.setInputProcessor(stage);
         game.currentMusic.play();
         Texture titleTexture = new Texture(Gdx.files.internal("Fonts & skins/Matematko.png"));
@@ -123,13 +124,13 @@ public class MainMenuScreen implements Screen {
     ;}
 
     @Override
-    public void pause() { System.out.println("paused Mainmenu");}
+    public void pause() {}
 
     @Override
-    public void resume() { System.out.println("unpasued Mainmenu");}
+    public void resume() {}
 
     @Override
-    public void hide() { System.out.println("hidden Mainmenu");
+    public void hide() {
         stage.clear();
     ;}
 
