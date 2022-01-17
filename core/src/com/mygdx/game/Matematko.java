@@ -29,6 +29,7 @@ public class Matematko extends Game {
 	public Music currentMusic;
 	public Skin skin;
 	public Array<Sound> sfx;
+	public Array<Music> music;
 	public static float musicVolume = 0.9f;
 	public static float sfxVolume = 0.5f;
 	public static MapManager mapManager;
@@ -59,11 +60,12 @@ public class Matematko extends Game {
 		skin.add("default", font36);
 		skin.load(Gdx.files.internal("Fonts & skins/skin.json"));
 
-		currentMusic = Gdx.audio.newMusic(Gdx.files.internal("Sound/music_4.wav"));
-		currentMusic.setLooping(true);
-		currentMusic.setVolume(musicVolume);
+		music = new Array<Music>(2);
+		music.add(Gdx.audio.newMusic(Gdx.files.internal("Sound/music_4.wav")));
+		music.add(Gdx.audio.newMusic(Gdx.files.internal("Sound/music_2.wav")));
 
-		this.setScreen(mainScreen);
+		setScreen(mainScreen);
+		setCurrentMusic(0);
 	}
 
 	private void addSFX() {
@@ -83,6 +85,13 @@ public class Matematko extends Game {
 		font36 = fontGenerator.generateFont(params);
 	}
 
+	public void setCurrentMusic(int trackNumber) {
+		currentMusic = music.get(trackNumber);
+		currentMusic.setVolume(musicVolume);
+		currentMusic.setLooping(true);
+		currentMusic.play();
+	}
+
 	@Override
 	public void render () {
 		super.render();
@@ -98,5 +107,6 @@ public class Matematko extends Game {
 		currentMusic.dispose();
 		sfx.clear();
 		currentMusic.dispose();
+		music.clear();
 	}
 }

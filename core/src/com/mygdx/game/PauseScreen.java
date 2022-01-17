@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -17,6 +18,7 @@ public class PauseScreen implements Screen {
     private Stage stage;
     private Table table;
     private TextButton resumeButton, mainMenuButton;
+    private Label pauseLabel;
 
     public PauseScreen(final  Matematko game) {
         this.game = game;
@@ -24,8 +26,11 @@ public class PauseScreen implements Screen {
     }
 
     private void createUI() {
-        resumeButton = new TextButton("Povratak", game.skin, "default");
+        pauseLabel = new Label("Igrica je pauzirana", game.skin, "default");
+        resumeButton = new TextButton("Nastavi", game.skin, "default");
         mainMenuButton = new TextButton("Glavni Izbornik", game.skin, "default");
+
+        pauseLabel.setFontScale(1.2f);
 
         resumeButton.addListener(new ClickListener() {
             @Override
@@ -39,18 +44,20 @@ public class PauseScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.sfx.get(0).play(game.sfxVolume);
+                game.currentMusic.stop();
                 game.setScreen(game.mainScreen);
             }
         });
 
         table = new Table();
-        table.setDebug(true);
-        table.setPosition(Matematko.W_WIDTH/2,Matematko.W_HEIGHT/2);
-        table.defaults().minWidth(350).minHeight(80).padBottom(50);
-        table.add(resumeButton);
+        table.setDebug(false);
+        table.setPosition(Matematko.W_WIDTH/2 - table.getHeight(),Matematko.W_HEIGHT/2 - table.getWidth());
+        table.defaults().minWidth(350).minHeight(80).padBottom(100);
+        table.add(pauseLabel).colspan(2);
         table.row();
-        table.add(mainMenuButton);
-
+        table.add(resumeButton).padRight(30).padLeft(65);
+        table.row();
+        table.add(mainMenuButton).padRight(30).padLeft(65);
         stage.addActor(table);
     }
 

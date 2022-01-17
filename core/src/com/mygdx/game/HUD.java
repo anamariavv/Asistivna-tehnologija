@@ -59,6 +59,7 @@ public class HUD implements Disposable {
         pauseButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                //game.currentMusic.pause();
                 game.setScreen(game.pauseScreen);
                 game.sfx.get(0).play(game.sfxVolume);
                 event.handle();

@@ -89,7 +89,6 @@ public class OptionsScreen implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-
         createUI();
     }
 

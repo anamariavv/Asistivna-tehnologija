@@ -10,6 +10,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -31,7 +32,7 @@ public class MainMenuScreen implements Screen {
 
     public MainMenuScreen(final Matematko game) {
         this.game = game;
-        this.stage = new Stage(new StretchViewport(Matematko.W_WIDTH, Matematko.W_HEIGHT, game.camera));
+        this.stage = new Stage(new StretchViewport(Matematko.W_WIDTH, Matematko.W_HEIGHT, new OrthographicCamera()));
     }
 
     private void createButtons() {
@@ -99,9 +100,12 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void show() {
+        game.setCurrentMusic(0);
+
         game.camera.setToOrtho(false);
+
         Gdx.input.setInputProcessor(stage);
-        game.currentMusic.play();
+
         Texture titleTexture = new Texture(Gdx.files.internal("Fonts & skins/Matematko.png"));
 
         titleImage = new Image(titleTexture);

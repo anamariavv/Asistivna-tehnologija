@@ -26,21 +26,19 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        game.currentMusic = Gdx.audio.newMusic(Gdx.files.internal("Sound/music_2.wav"));
-        game.currentMusic.setVolume(game.musicVolume);
-        game.currentMusic.play();
         game.multiplexer.addProcessor(hud.stage);
         game.multiplexer.addProcessor(stage);
         Gdx.input.setInputProcessor(game.multiplexer);
+        game.setCurrentMusic(1);
     }
 
     @Override
     public void render(float delta) {
         ScreenUtils.clear(Color.BLACK);
 
-        MapManager.renderMap(game.camera);
-
         game.batch.setProjectionMatrix(game.camera.combined);
+
+        MapManager.renderMap(game.camera);
 
         game.batch.begin();
         //Todo player still moves even thought HUD button was pressed -> fix this
@@ -101,7 +99,6 @@ public class GameScreen implements Screen {
     @Override
     public void hide() {
         stage.clear();
-        game.currentMusic.pause();
     }
 
     @Override
